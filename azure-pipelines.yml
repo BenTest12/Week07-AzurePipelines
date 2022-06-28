@@ -1,0 +1,38 @@
+# CI pipeline
+
+trigger:
+- master
+
+pool:
+  name: "staging-agents"
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '14.x'
+
+- task: Npm@1
+  inputs:
+    command: 'install'
+
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(Build.BinariesDirectory)'
+    includeRootFolder: true
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    replaceExistingArchive: true
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    artifact: 'app-artifact'
+    publishLocation: 'pipeline'
+- task: UniversalPackages@0
+  inputs:
+    command: 'publish'
+    publishDirectory: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    feedsToUsePublish: 'internal'
+    vstsFeedPublish: '680ed216-9463-467e-90b3-b1757cdb7c2c'
+    vstsFeedPackagePublish: 'app-artifact'
+    versionOption: 'patch'
+    packagePublishDescription: 'publish to Azure Artifacts'
