@@ -15,22 +15,17 @@ steps:
   inputs:
     command: 'install'
 
-- task: ArchiveFiles@2
+
+- task: CopyFiles@2
   inputs:
-    rootFolderOrFile: '$(Build.BinariesDirectory)'
-    includeRootFolder: true
-    archiveType: 'tar'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).tar'
-    replaceExistingArchive: true
-- task: PublishPipelineArtifact@1
-  inputs:
-    targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).tar'
-    artifact: 'app-artifact'
-    publishLocation: 'pipeline'
+    SourceFolder: '$(Build.SourcesDirectory)'
+    Contents: '*/**'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
 - task: UniversalPackages@0
   inputs:
     command: 'publish'
-    publishDirectory: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).tar'
+    publishDirectory: '$(Build.ArtifactStagingDirectory)'
     feedsToUsePublish: 'internal'
     vstsFeedPublish: '680ed216-9463-467e-90b3-b1757cdb7c2c'
     vstsFeedPackagePublish: 'app-artifact'
