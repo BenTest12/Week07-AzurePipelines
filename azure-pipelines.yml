@@ -1,7 +1,7 @@
 # CI pipeline
 
 trigger:
-- master
+- main
 
 pool:
   name: "staging-agents"
@@ -20,17 +20,17 @@ steps:
     rootFolderOrFile: '$(Build.BinariesDirectory)'
     includeRootFolder: true
     archiveType: 'tar'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).tar'
     replaceExistingArchive: true
 - task: PublishPipelineArtifact@1
   inputs:
-    targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).tar'
     artifact: 'app-artifact'
     publishLocation: 'pipeline'
 - task: UniversalPackages@0
   inputs:
     command: 'publish'
-    publishDirectory: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    publishDirectory: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).tar'
     feedsToUsePublish: 'internal'
     vstsFeedPublish: '680ed216-9463-467e-90b3-b1757cdb7c2c'
     vstsFeedPackagePublish: 'app-artifact'
