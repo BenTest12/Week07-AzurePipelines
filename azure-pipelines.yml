@@ -7,7 +7,7 @@ trigger:
 - main
 
 pool:
-  name: "staging-agents"
+  name: "ansible"
 
 steps:
 - task: NodeTool@0
