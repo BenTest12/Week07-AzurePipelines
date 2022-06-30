@@ -1,4 +1,7 @@
-# CI pipeline
+# CI Pipeline description
+# Checks out on a remote machine
+# And then runs all dependency requirements
+# In order to build and publish a pre-built artifact
 
 trigger:
 - main
